@@ -184,31 +184,32 @@ poetry --version  # Should show Poetry version 1.8.3 or later
 2. Set up the project environment and install dependencies:
 
 ```bash
-poetry env use 3.11
+poetry env use "$(pyenv which python)"
 poetry install --without aws
 poetry run pre-commit install
 ```
 
 This will:
 
-- Configure Poetry to use Python 3.11
+- Configure Poetry to use the Python version selected by pyenv
 - Install project dependencies (excluding AWS-specific packages)
 - Set up pre-commit hooks for code verification
 
-### 4. Activate the Environment
+### 4. Run Project Tasks
 
 As our task manager, we run all the scripts using [Poe the Poet](https://poethepoet.natn.io/index.html).
 
-1. Start a Poetry shell:
+Poe the Poet is installed as a project dependency, so run Poe tasks through Poetry:
 
 ```bash
-poetry shell
+poetry run poe ...
 ```
 
-2. Run project commands using Poe the Poet:
+Alternatively, you can activate the virtual environment and run `poe` directly:
 
 ```bash
-poetry poe ...
+source .venv/bin/activate
+poe ...
 ```
 
 <details>
@@ -216,21 +217,26 @@ poetry poe ...
 
 ### Alternative Command Execution
 
-If you're experiencing issues with `poethepoet`, you can still run the project commands directly through Poetry. Here's how:
+If you're experiencing issues with `poethepoet`, make sure you are using the project dependency version:
 
-1. Look up the command definition in `pyproject.toml`
-2. Use `poetry run` with the underlying command
+```bash
+poetry run poe --version
+```
 
-#### Example:
-Instead of:
+Project tasks are defined in the `[tool.poe.tasks]` section of `pyproject.toml`.
+
+Use:
+```bash
+poetry run poe local-infrastructure-up
+```
+
+instead of:
+
 ```bash
 poetry poe local-infrastructure-up
 ```
-Use the direct command from pyproject.toml:
-```bash
-poetry run <actual-command-from-pyproject-toml>
-```
-Note: All project commands are defined in the [tool.poe.tasks] section of pyproject.toml
+
+The `poetry poe ...` form only works when Poe the Poet is installed as a Poetry plugin.
 </details>
 
 Now, let's configure our local project with all the necessary credentials and tokens to run the code locally.
