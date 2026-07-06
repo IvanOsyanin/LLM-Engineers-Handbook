@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     # OpenAI API
     OPENAI_MODEL_ID: str = "gpt-4o-mini"
     OPENAI_API_KEY: str | None = None
+    OPENAI_BASE_URL: str = "https://api.openai.com/v1"
 
     # Huggingface API
     HUGGINGFACE_ACCESS_TOKEN: str | None = None
@@ -70,12 +71,14 @@ class Settings(BaseSettings):
 
     @property
     def OPENAI_MAX_TOKEN_WINDOW(self) -> int:
+        # Normalize provider-prefixed names (e.g. OpenRouter's "openai/gpt-4o-mini").
+        normalized_model_id = self.OPENAI_MODEL_ID.split("/")[-1]
         official_max_token_window = {
             "gpt-3.5-turbo": 16385,
             "gpt-4-turbo": 128000,
             "gpt-4o": 128000,
             "gpt-4o-mini": 128000,
-        }.get(self.OPENAI_MODEL_ID, 128000)
+        }.get(normalized_model_id, 128000)
 
         max_token_window = int(official_max_token_window * 0.90)
 

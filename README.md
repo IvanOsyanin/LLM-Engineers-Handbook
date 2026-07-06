@@ -259,6 +259,8 @@ To authenticate to OpenAI's API, you must fill out the `OPENAI_API_KEY` env var 
 
 ```env
 OPENAI_API_KEY=your_api_key_here
+OPENAI_MODEL_ID=gpt-4o-mini
+OPENAI_BASE_URL=https://api.openai.com/v1
 ```
 
 → Check out this [tutorial](https://platform.openai.com/docs/quickstart) to learn how to provide one from OpenAI.

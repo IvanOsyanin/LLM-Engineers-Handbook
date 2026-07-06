@@ -21,8 +21,18 @@ from . import utils as generation_utils
 from .output_parsers import ListPydanticOutputParser
 
 
+def _get_tokenizer(model_id: str) -> tiktoken.Encoding:
+    # Strip any provider prefix (e.g. OpenRouter's "openai/gpt-4o-mini") and fall
+    # back to a modern encoding when the model isn't known to tiktoken.
+    normalized_model_id = model_id.split("/")[-1]
+    try:
+        return tiktoken.encoding_for_model(normalized_model_id)
+    except KeyError:
+        return tiktoken.get_encoding("o200k_base")
+
+
 class DatasetGenerator(ABC):
-    tokenizer = tiktoken.encoding_for_model(settings.OPENAI_MODEL_ID)
+    tokenizer = _get_tokenizer(settings.OPENAI_MODEL_ID)
     dataset_type: DatasetType | None = None
 
     system_prompt_template = """You are a helpful assistant who generates {dataset_format} based on the given context. \
@@ -117,6 +127,7 @@ Provide your response in JSON format.
             llm = ChatOpenAI(
                 model=settings.OPENAI_MODEL_ID,
                 api_key=settings.OPENAI_API_KEY,
+                base_url=settings.OPENAI_BASE_URL,
                 max_tokens=2000 if cls.dataset_type == DatasetType.PREFERENCE else 1200,
                 temperature=0.7,
             )
