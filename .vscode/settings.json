@@ -1,17 +1,5 @@
 {
-    "[python]": {
-        "editor.formatOnSave": true,
-        "editor.codeActionsOnSave": {
-            "source.fixAll": "explicit",
-            "source.organizeImports": "explicit"
-        },
-        "editor.defaultFormatter": "charliermarsh.ruff"
-    },
-    "notebook.formatOnSave.enabled": true,
-    "notebook.codeActionsOnSave": {
-        "notebook.source.fixAll": "explicit",
-        "notebook.source.organizeImports": "explicit"
-    },
-    "python-envs.defaultEnvManager": "ms-python.python:poetry",
-    "python-envs.defaultPackageManager": "ms-python.python:poetry",
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+    "ruff.path": ["${workspaceFolder}/.venv/bin/ruff"],
+    "ruff.interpreter": ["${workspaceFolder}/.venv/bin/python"]
 }
