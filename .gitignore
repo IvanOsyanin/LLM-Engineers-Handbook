@@ -165,7 +165,7 @@ cython_debug/
 .DS_Store
 
 # VS Code
-.vscode/**/launch.json
+.vscode/
 
 # Data
 output/
